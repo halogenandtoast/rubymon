@@ -8,6 +8,7 @@ VALUE rb_str_new(char* text) {
   return (VALUE) str;
 }
 
-void rb_str_dealloc(struct RString* string) {
-  free(string);
+void rb_str_dealloc(VALUE string) {
+  free(((struct RString *) string)->content);
+  free((struct RString *) string);
 }

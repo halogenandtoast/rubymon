@@ -13,11 +13,11 @@ VALUE rb_hash_allocate() {
 void rb_hash_dealloc(VALUE hash) {
   khiter_t k;
   kh_VALUE_t* khash = ((struct rb_hash*) hash)->kh;
-  for (k = kh_begin(khash); k != kh_end(khash); ++k) {
-    rb_str_dealloc((struct RString*)kh_key(khash, k));
-    rb_str_dealloc((struct RString*)kh_value(khash, k));
-  }
-  kh_destroy(VALUE, ((struct rb_hash*) hash)->kh);
+  /* for (k = kh_begin(khash); k != kh_end(khash); ++k) { */
+  /*   rb_str_dealloc((VALUE)kh_key(khash, k)); */
+  /*   rb_str_dealloc((VALUE)kh_value(khash, k)); */
+  /* } */
+  kh_destroy(VALUE, khash);
   free((struct rb_hash *)hash);
 }
 

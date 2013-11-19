@@ -10,6 +10,6 @@ struct RString {
 };
 
 VALUE rb_str_new(char* text);
-void rb_str_dealloc(struct RString* string);
+void rb_str_dealloc(VALUE string);
 
 #endif
