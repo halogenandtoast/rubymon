@@ -1,5 +1,6 @@
 %{
 #include "vm.h"
+#include "string.h"
 #include <stdio.h>
 void yyerror(VM* vm, const char* error) {
   fprintf(stderr, "Error: %s", error);
@@ -33,7 +34,7 @@ statements: statements TERM statement
           ;
 
 statement: ID expression { printf("%d\n", $2); }
-         | ID '=' expression { printf("assign: %s => %d", $1, $3); }
+         | ID '=' expression { rb_vm_store(vm, rb_str_new($1), rb_str_new($1)); }
          | expression
          ;
 
@@ -46,7 +47,7 @@ expression: expression '+' expression { $$ = $1 + $3;; }
           ;
 
 opt_term: TERM { ; }
-        | { ; }
+        | {}
         ;
 
 %%
