@@ -34,7 +34,7 @@ statements: statements TERM statement
           ;
 
 statement: ID expression { printf("%d\n", $2); }
-         | ID '=' expression { rb_vm_store(vm, rb_str_new($1), rb_str_new($1)); }
+         | ID '=' expression { rb_vm_store(vm, rb_str_new($1), rb_str_new($1)); free($1); }
          | expression
          ;
 
