@@ -5,7 +5,6 @@
 #include "vm.h"
 
 struct RString {
-  struct rb_object_header;
   char* content;
 };
 

@@ -45,8 +45,8 @@ expression: expression '+' expression { $$ = $1 + $3;; }
           | NUMBER { $$ = $1; }
           ;
 
-opt_term: TERM
-        |
+opt_term: TERM { ; }
+        | { ; }
         ;
 
 %%
