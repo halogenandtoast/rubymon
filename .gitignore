@@ -1,0 +1,5 @@
+ruby.dSYM/
+ruby
+lex.yy.c
+y.tab.c
+y.tab.h
