@@ -24,10 +24,14 @@ VALUE rb_hash_lookup(VALUE hash, VALUE key) {
 void rb_hash_dealloc(VALUE hash) {
   khiter_t k;
   kh_VALUE_t* khash = ((struct rb_hash*) hash)->kh;
+  char* key;
+  VALUE value;
   for (k = kh_begin(khash); k != kh_end(khash); ++k) {
     if(kh_exist(khash, k)) {
-      /* rb_str_dealloc((VALUE)kh_key(khash, k)); */
-      /* rb_str_dealloc((VALUE)kh_value(khash, k)); */
+      char* key = (char *) kh_key(khash, k);
+      value = kh_value(khash, k);
+      free(key);
+      rb_free(value);
     }
   }
   kh_destroy(VALUE, khash);

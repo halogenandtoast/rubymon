@@ -31,3 +31,14 @@ VALUE rb_vm_store(VM* vm, VALUE key, VALUE value) {
 VALUE rb_vm_lookup(VM* vm, VALUE key) {
   return rb_hash_lookup(vm->symtbl, key);
 }
+
+void rb_free(VALUE value) {
+  if(value & 0x1) {
+  } else {
+    rb_str_dealloc(value);
+  }
+}
+
+VALUE rb_gc_add(VM* vm, VALUE value) {
+  return value;
+}

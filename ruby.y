@@ -52,7 +52,7 @@ expression: expression '+' expression { $$ = rb_fixnum_add($1, $3); }
           | id { $$ = rb_vm_lookup(vm, $1); }
           ;
 
-id: ID { $$ = rb_str_new($1); }
+id: ID { $$ = rb_gc_add(vm, rb_str_new($1)); }
   ;
 
 opt_term: TERM { ; }
