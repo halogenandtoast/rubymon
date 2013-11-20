@@ -10,13 +10,24 @@ VALUE rb_hash_allocate() {
   return (VALUE) hash;
 }
 
+VALUE rb_hash_lookup(VALUE hash, VALUE key) {
+  int absent;
+  kh_VALUE_t* khash = ((struct rb_hash*) hash)->kh;
+  khint_t k = kh_put(VALUE, khash, RB_CSTR(key), &absent);
+  if(absent) {
+    return Qnil;
+  } else {
+    return kh_value(khash, k);
+  }
+}
+
 void rb_hash_dealloc(VALUE hash) {
   khiter_t k;
   kh_VALUE_t* khash = ((struct rb_hash*) hash)->kh;
   for (k = kh_begin(khash); k != kh_end(khash); ++k) {
     if(kh_exist(khash, k)) {
-      rb_str_dealloc((VALUE)kh_key(khash, k));
-      rb_str_dealloc((VALUE)kh_value(khash, k));
+      /* rb_str_dealloc((VALUE)kh_key(khash, k)); */
+      /* rb_str_dealloc((VALUE)kh_value(khash, k)); */
     }
   }
   kh_destroy(VALUE, khash);
@@ -26,7 +37,7 @@ void rb_hash_dealloc(VALUE hash) {
 void rb_hash_store(VALUE hash, VALUE key, VALUE value) {
   int ret;
   kh_VALUE_t* khash = ((struct rb_hash*) hash)->kh;
-  unsigned k = kh_put(VALUE, khash, key, &ret);
+  khint_t k = kh_put(VALUE, khash, RB_CSTR(key), &ret);
   if (!ret) {
     kh_del(VALUE, khash, k);
   }
@@ -34,7 +45,7 @@ void rb_hash_store(VALUE hash, VALUE key, VALUE value) {
 }
 
 void rb_hash_dump(VALUE hash) {
-  char* lookup;
+  VALUE lookup;
   char* key;
   kh_VALUE_t* khash = ((struct rb_hash*) hash)->kh;
   printf("{");
@@ -46,9 +57,13 @@ void rb_hash_dump(VALUE hash) {
       if(count++ != 0) {
         printf(",");
       }
-      key = RB_CSTR(kh_key(khash, k));
-      lookup = RB_CSTR(kh_value(khash, k));
-      printf(" %s => %s", key, lookup);
+      key = (char*) kh_key(khash, k);
+      lookup = kh_value(khash, k);
+      if(lookup & 0x1) {
+        printf(" %s => %d", key, RB_INT(lookup));
+      } else {
+        printf(" %s => %s", key, RB_CSTR(lookup));
+      }
       if(count == size) {
         printf(" ");
       }

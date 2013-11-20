@@ -6,23 +6,6 @@
 
 extern FILE* yyin;
 
-/* void test_hash() { */
-/*   VALUE key = rb_str_new("name"); */
-/*   VALUE value = rb_str_new("Goose Mongeau"); */
-/*  */
-/*   VALUE hash = rb_hash_allocate(); */
-/*   rb_hash_store(hash, key, value); */
-/*  */
-/*   key = rb_str_new("spouse"); */
-/*   value = rb_str_new("Brandy Mongeau"); */
-/*  */
-/*   rb_hash_store(hash, key, value); */
-/*  */
-/*   rb_hash_dump(hash); */
-/*   rb_hash_dealloc(hash); */
-/*  */
-/* } */
-
 int main(int argc, char* argv[]) {
   VM* vm = rb_vm_new();
   if(argc > 1) {

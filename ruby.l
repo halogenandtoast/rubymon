@@ -7,6 +7,7 @@
 %option noyywrap
 
 %%
+"\""([^\"])*"\"" { memcpy(yylval.str, yytext + 1, yyleng - 2); yylval.str[yyleng -2] = '\0'; return STR; }
 [a-z]+ { yylval.str = strdup(yytext); return ID; }
 "(" { return LPAREN; }
 ")" { return RPAREN; }

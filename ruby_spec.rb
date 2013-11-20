@@ -29,6 +29,25 @@ describe "Ruby impelementation" do
     expect(output).to eq("4")
   end
 
+  it "can handle simple assignment" do
+    program =<<-RUBY
+    x = 5
+    y = x * 4 + 1
+    puts y
+    RUBY
+    output = run(program)
+    expect(output).to eq("21")
+  end
+
+  it "can handle string assignment" do
+    program =<<-RUBY
+    y = "Hello, world"
+    puts y
+    RUBY
+    output = run(program)
+    expect(output).to eq("Hello, world")
+  end
+
   def run(program)
     stdout,_,_ = Open3.capture3("./ruby", stdin_data: program)
     stdout.chomp
